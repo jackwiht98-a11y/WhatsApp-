@@ -16,18 +16,22 @@ const client = new Client({
     }
 });
 
+// Cuando WhatsApp pide el QR, mejor generamos el pairing code
+client.on('qr', async (qr) => {
+    console.log('QR recibido, generando pairing code...');
+    // CAMBIA ESTO por tu número: 521 + 10 dígitos
+    const pairingCode = await client.requestPairingCode("522295213271"); 
+    console.log('========================');
+    console.log('PAIRING CODE:', pairingCode);
+    console.log('========================');
+});
+
 client.on('ready', () => {
     console.log('Client is ready!');
 });
 
-client.on('pairing-code', (code) => {
-    console.log('========================');
-    console.log('PAIRING CODE:', code);
-    console.log('========================');
+client.on('authenticated', () => {
+    console.log('Autenticado correctamente');
 });
-
-// CAMBIA ESTO: Pon tu número completo con 521 + 10 dígitos
-// Ejemplo México: 5215512345678
-client.requestPairingCode("521TU_NUMERO_AQUI");
 
 client.initialize();
