@@ -1,5 +1,4 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
 
 const client = new Client({
     authStrategy: new LocalAuth({ dataPath: 'session' }),
@@ -17,12 +16,18 @@ const client = new Client({
     }
 });
 
-client.on('qr', qr => {
-    qrcode.generate(qr, { small: true });
-});
-
 client.on('ready', () => {
     console.log('Client is ready!');
 });
+
+client.on('pairing-code', (code) => {
+    console.log('========================');
+    console.log('PAIRING CODE:', code);
+    console.log('========================');
+});
+
+// CAMBIA ESTO: Pon tu número completo con 521 + 10 dígitos
+// Ejemplo México: 5215512345678
+client.requestPairingCode("521TU_NUMERO_AQUI");
 
 client.initialize();
