@@ -13,17 +13,25 @@ const client = new Client({
             '--no-zygote',
             '--single-process'
         ]
+    },
+    // ESTA LÍNEA ARREGLA EL ERROR DE 'evaluate'
+    webVersionCache: {
+        type: 'remote',
+        remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html',
     }
 });
 
-// Cuando WhatsApp pide el QR, mejor generamos el pairing code
 client.on('qr', async (qr) => {
     console.log('QR recibido, generando pairing code...');
-    // CAMBIA ESTO por tu número: 521 + 10 dígitos
-    const pairingCode = await client.requestPairingCode("522295213271"); 
-    console.log('========================');
-    console.log('PAIRING CODE:', pairingCode);
-    console.log('========================');
+    try {
+        // IMPORTANTE: Cambia por tu número 521XXXXXXXXXX
+        const pairingCode = await client.requestPairingCode("522295213271"); 
+        console.log('========================');
+        console.log('PAIRING CODE:', pairingCode);
+        console.log('========================');
+    } catch (err) {
+        console.log('Error generando pairing code:', err);
+    }
 });
 
 client.on('ready', () => {
